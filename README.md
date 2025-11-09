@@ -8,8 +8,8 @@
 A **secure, scalable REST API** with **JWT-based authentication**, **role-based access control (user vs admin)**, and **CRUD operations on Products**.  
 Paired with a **clean, responsive frontend** built using **Next.js 14 (App Router)**, **Redux + Redux Persist**, **Axios**, and **shadcn/ui**.
 
-**Live Demo:** \`https://primetraid-ai-frontend.vercel.app`  
-**Backend API:** \`https://prime-traind-api-assessment.vercel.app/api/v1`  
+**Live Demo:** https://primetraid-ai-frontend.vercel.app  
+**Backend API:** https://prime-traind-api-assessment.vercel.app/api/v1  
 
 ---
 ## use credientials below for login of user & admin
