@@ -55,7 +55,7 @@ Paired with a **clean, responsive frontend** built using **Next.js 14 (App Route
 
 ## Project Structure
 
-\`\`\`bash
+```bash
 /backend
   ├── controllers/     # Auth, Product, Admin
   ├── middleware/      # auth, admin, errorHandler
@@ -84,7 +84,7 @@ Paired with a **clean, responsive frontend** built using **Next.js 14 (App Route
   │   └── authSlice.js
   └── src/hooks/
       └── useAuth.js
-\`\`\`
+```
 
 ---
 
@@ -110,20 +110,20 @@ Paired with a **clean, responsive frontend** built using **Next.js 14 (App Route
 ## How to Run
 
 ### Backend
-\`\`\`bash
+```bash
 cd backend
 npm install
 cp .env.example .env
 npm run dev
-\`\`\`
+```
 
 ### Frontend
-\`\`\`bash
+```bash
 cd frontend
 npm install
 cp .env.example .env.local
 npm run dev
-\`\`\`
+```
 
 ---
 
