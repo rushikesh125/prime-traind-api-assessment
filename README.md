@@ -25,7 +25,7 @@ Paired with a **clean, responsive frontend** built using **Next.js 14 (App Route
 | API Versioning | Completed | \`/api/v1/...\` |
 | Input Validation | Completed | \`zod\` + \`express-validator\` |
 | Error Handling | Completed | Global handler, consistent JSON responses |
-| API Documentation | Completed | Poastman collection at \`/poastman.json\` |
+| API Documentation | Completed | Poastman collection at \`/postman.json\` |
 | Frontend UI | Completed | Next.js + shadcn/ui + React Hot Toast |
 | Secure JWT Handling | Completed | HttpOnly cookies or localStorage + Axios interceptor |
 | Responsive & Clean UI | Completed | Mobile-friendly, loading states, toasts |
@@ -92,6 +92,8 @@ Paired with a **clean, responsive frontend** built using **Next.js 14 (App Route
 ## API Documentation
 
 - **Postman Collection:** [Download here](./postman.json)
+Download json file and import in the postman via a import option 
+- ** download postman collection [Download here](https://none66-2999.postman.co/workspace/incubyte~f2c25b5a-fd81-43ac-a2e6-95b51e70ebb3/collection/33303263-32ef92c1-7b7b-46a7-b57d-c2ded5a15828?action=share&creator=33303263&active-environment=33303263-2b832b81-0d2c-40d8-b765-18c2e042ce75)
 
 ---
 
