@@ -12,6 +12,21 @@ Paired with a **clean, responsive frontend** built using **Next.js 14 (App Route
 **Backend API:** \`https://prime-traind-api-assessment.vercel.app/api/v1\`  
 
 ---
+## use credientials below for login of user & admin
+
+- User Login 
+```bash
+email: user1@example.com
+password: 123456
+```
+- Admin Login 
+
+```bash
+email: admin@example.com
+password: 123456
+```
+
+
 
 ## Core Features Implemented
 
