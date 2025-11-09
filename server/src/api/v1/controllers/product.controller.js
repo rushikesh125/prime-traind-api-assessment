@@ -1,6 +1,6 @@
 import Product from "../../../models/Product.model.js";
 import { sendResponse } from "../../../utils/response.js";
-import { createProductSchema } from "../../../utils/validate.js";
+import { createProductSchema, updateProductSchema } from "../../../utils/validate.js";
 
 export const getProducts = async (req, res) => {
   try {

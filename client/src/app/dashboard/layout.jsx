@@ -13,7 +13,8 @@ import {
   Menu,
   X,
   ShoppingBag,
-  Crown
+  Crown,
+  TableProperties
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -42,6 +43,12 @@ export default function DashboardLayout({ children }) {
       label: 'Admin Panel',
       path: '/dashboard/admin',
       icon: Crown,
+      show: user?.role === 'admin'
+    },
+    {
+      label: 'All Products',
+      path: '/dashboard/admin/products',
+      icon: TableProperties ,
       show: user?.role === 'admin'
     }
   ];

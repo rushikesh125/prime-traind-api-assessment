@@ -1,0 +1,440 @@
+{
+  "info": {
+    "name": "Product Manager API - Complete",
+    "description": "Full REST API with JWT Auth, Role-Based Access (User & Admin), Product CRUD, and Admin Panel.\n\n**Features:**\n- Secure JWT Authentication\n- bcrypt password hashing\n- Role-based access control\n- API Versioning (`/api/v1`)\n- Input validation with Zod\n- MongoDB + Mongoose\n- Admin can manage users & all products\n\n**Base URL:** `{{baseUrl}}`\n\n**Use Environment Variables:**\n- `{{baseUrl}}` → `http://localhost:5000`\n- `{{token}}` → User JWT\n- `{{adminToken}}` → Admin JWT\n- `{{productId}}`, `{{userId}}` → Dynamic IDs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string",
+      "description": "Backend server URL"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT for regular user"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string",
+      "description": "JWT for admin user"
+    },
+    {
+      "key": "productId",
+      "value": "",
+      "type": "string",
+      "description": "Dynamic product ID"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string",
+      "description": "Dynamic user ID"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "description": "Public endpoints for user registration and login.",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data.token) {",
+                  "    pm.environment.set('token', res.data.token);",
+                  "    pm.environment.set('userId', res.data.user.id);",
+                  "    console.log('Registered & token saved:', res.data.user.email);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user{{ $randomInt }}@example.com\",\n  \"password\": \"123456\",\n  \"name\": \"Test User {{ $randomInt }}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "register"]
+            },
+            "description": "Register a new user. Auto-saves JWT to `{{token}}`."
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/auth/register",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "auth", "register"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User registered successfully\",\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"user\": {\n      \"id\": \"67a1b2c3d4e5f6789abcde12\",\n      \"email\": \"user123@example.com\",\n      \"name\": \"Test User 123\",\n      \"role\": \"user\"\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data.token) {",
+                  "    pm.environment.set('token', res.data.token);",
+                  "    console.log('Logged in as user');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user123@example.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            },
+            "description": "Login user. Saves JWT to `{{token}}`."
+          },
+          "response": []
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data.token) {",
+                  "    pm.environment.set('adminToken', res.data.token);",
+                  "    console.log('Logged in as ADMIN');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            },
+            "description": "**Create admin first via DB or register with email `admin@example.com` and manually set role to `admin` in MongoDB.**"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Products",
+      "description": "Authenticated user can manage **their own** products.",
+      "item": [
+        {
+          "name": "Create Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data._id) {",
+                  "    pm.environment.set('productId', res.data._id);",
+                  "    console.log('Product created:', res.data.name);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"iPhone 15\",\n  \"description\": \"Latest model\",\n  \"price\": 999,\n  \"category\": \"electronics\",\n  \"stock\": 50\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"]
+            },
+            "description": "Create a new product. Auto-saves `productId`."
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"]
+            },
+            "description": "Get all products belonging to the logged-in user."
+          },
+          "response": []
+        },
+        {
+          "name": "Get One Product",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", "{{productId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 899,\n  \"stock\": 45\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", "{{productId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Product (Owner)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", "{{productId}}"]
+            },
+            "description": "User can delete their own product."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin Panel",
+      "description": "Admin-only routes. Requires `{{adminToken}}`.",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get One User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "users", "{{userId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Role",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "users", "{{userId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "users", "{{userId}}"]
+            },
+            "description": "Deletes user and all their products."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Products (Admin View)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "products"]
+            },
+            "description": "Admin sees **all** products from all users."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Any Product",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "products", "{{productId}}"]
+            },
+            "description": "Admin can delete any product."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

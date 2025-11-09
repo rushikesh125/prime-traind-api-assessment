@@ -18,7 +18,7 @@ app.use(morgan('dev'));
 app.use(express.json())
 
 app.get("/",(req,res)=>{
-    return res.status(200).json({msg:"Hello , Everything is Gook"})
+    return res.status(200).json({msg:"Hello , Everything is Good"})
 })
 app.use(errorHandler)
 

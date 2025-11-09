@@ -6,39 +6,32 @@ import User from "../../../models/User.model.js";
 const generateToken = (id) => {
   const secret = process.env.JWT_SECRET;
   const expiresIn = process.env.JWT_EXPIRES_IN;
-  return jwt.sing({ id }, secret, {
+  return jwt.sign({ id }, secret, {
     expiresIn: expiresIn,
   });
 };
 
 
-export const register = async (req,res)=>{
-    try {
-        const {email,password,name} = registerSchema.parse(req.body);
-        const existingUser = await User.findOne({email});
-        if(existingUser){
-            return sendResponse(res,400,false,'User already exits');
-        }
-        const user = await User.create({email,password,name});
-        const token = generateToken(user._id);
-        const userResponse= {
-            id:user._id,
-            email:user.email,
-            name:user.name,
-            role:user.role,
-        };
-        sendResponse(res,201,true,'User registered successfully',{
-            token,
-            user:userResponse,
-        });
-    } catch (error) {
-        if(error.name === 'ZodError'){
-            const message = error.errors.map((e)=>e.message).join(', ');
-            return sendResponse(res,400,false,message);
-        }
-        sendResponse(res,500,false,error.message|| 'Server error');
-    }
-}
+export const register = async (req, res) => {
+  try {
+    const { email, password, name } = registerSchema.parse(req.body);
+    console.log(email,password,name)
+    const exists = await User.findOne({ email });
+    if (exists) throw new Error('User already exists');
+
+    const user = await User.create({ email, password, name });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN
+    });
+
+    sendResponse(res, 201, true, 'User registered', {
+      token,
+      user: { id: user._id, email: user.email, name: user.name, role: user.role }
+    });
+  } catch (err) {
+    sendResponse(res, 400, false, err.message);
+  }
+};
 
 export const login = async (req,res)=>{
     try {
