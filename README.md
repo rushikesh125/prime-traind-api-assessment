@@ -25,7 +25,7 @@ Paired with a **clean, responsive frontend** built using **Next.js 14 (App Route
 | API Versioning | Completed | \`/api/v1/...\` |
 | Input Validation | Completed | \`zod\` + \`express-validator\` |
 | Error Handling | Completed | Global handler, consistent JSON responses |
-| API Documentation | Completed | Swagger UI at \`/api-docs\` |
+| API Documentation | Completed | Poastman collection at \`/poastman.json\` |
 | Frontend UI | Completed | Next.js + shadcn/ui + React Hot Toast |
 | Secure JWT Handling | Completed | HttpOnly cookies or localStorage + Axios interceptor |
 | Responsive & Clean UI | Completed | Mobile-friendly, loading states, toasts |
@@ -63,11 +63,12 @@ Paired with a **clean, responsive frontend** built using **Next.js 14 (App Route
   ├── routes/          # v1/auth, v1/products, v1/admin
   ├── utils/           # sendResponse, catchAsync
   ├── server.js
-  └── swagger.js
+
 
 /frontend
   ├── src/app/
   │   ├── (auth)/login/page.jsx
+  │   ├── (auth)/register/page.jsx
   │   ├── dashboard/
   │   │   ├── page.jsx
   │   │   └── admin/
@@ -90,8 +91,7 @@ Paired with a **clean, responsive frontend** built using **Next.js 14 (App Route
 
 ## API Documentation
 
-- **Swagger UI:** \`https://your-backend.onrender.com/api-docs\`
-- **Postman Collection:** [Download here](./ProductManager.postman_collection.json)
+- **Postman Collection:** [Download here](./postman.json)
 
 ---
 
