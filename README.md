@@ -107,7 +107,9 @@ password: 123456
 
 - **Postman Collection:** [Download here](./postman.json)
 Download json file and import in the postman via a import option 
-- **Download api collection file:** [Download here](https://none66-2999.postman.co/workspace/incubyte~f2c25b5a-fd81-43ac-a2e6-95b51e70ebb3/collection/33303263-32ef92c1-7b7b-46a7-b57d-c2ded5a15828?action=share&creator=33303263&active-environment=33303263-2b832b81-0d2c-40d8-b765-18c2e042ce75)
+- **Download api collection file:** [Download here](
+  
+)
 
 ---
 
